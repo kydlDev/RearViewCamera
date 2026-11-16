@@ -4,8 +4,8 @@ using KydlCore.Core;
 namespace RearViewCamera.Features.RearView.Infrastructure;
 
 /// <summary>
-/// The rear view (small window + full screen). Gate: [General] EnableAll (one functionality). RearViewController.Tick already hides and frees everything
-/// while EnableAll is off; Stop does the same at once so nothing waits for the next frame.
+/// The rear view (small window + full screen). Gate: [General] Enable mod (one functionality). RearViewController.Tick already hides and frees everything
+/// while EnableMod is off; Stop does the same at once so nothing waits for the next frame.
 /// </summary>
 internal sealed class RearViewFeature : IFeature
 {

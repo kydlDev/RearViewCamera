@@ -15,10 +15,10 @@ internal static class InGameTests
     /// The player config is bound and the mod is switched on.
     static string Startup_ConfigBound()
     {
-        if (ModSettings.EnableAll == null) return "FAIL: ModSettings.Bind did not run (EnableAll is null)";
+        if (ModSettings.EnableMod == null) return "FAIL: ModSettings.Bind did not run (EnableMod is null)";
         return ModSettings.On
-            ? "PASS: EnableAll on, small key " + ModSettings.SmallCameraKey.Value + " (" + ModSettings.SmallCameraKeyMode.Value + "), full-screen key " + ModSettings.FullScreenKey.Value + ", height " + ModSettings.SmallHeight.Value + " px"
-            : "SKIP: EnableAll is off in the config";
+            ? "PASS: EnableMod on, small key " + ModSettings.SmallCameraKey.Value + " (" + ModSettings.SmallCameraKeyMode.Value + "), full-screen key " + ModSettings.FullScreenKey.Value + ", height " + ModSettings.SmallHeight.Value + " px"
+            : "SKIP: EnableMod is off in the config";
     }
 
     /// The small window would sit fully on screen, 16:9, under the minimap (computed with the controller's minimap lookup, nothing is shown).

@@ -30,7 +30,7 @@ Client-only: install it on your own game; servers and other players do not need 
 
 | Section | Setting | Default | What it does |
 |---------|---------|---------|--------------|
-| General | EnableAll | true | Switches the whole mod on / off |
+| General | Enable mod | true | Switches the whole mod on / off |
 | Controls | SmallCameraKey | N | Key for the small rear view |
 | Controls | SmallCameraKeyMode | Toggle | Toggle or Hold |
 | Controls | FullScreenKey | J | Hold for the full-screen rear view |

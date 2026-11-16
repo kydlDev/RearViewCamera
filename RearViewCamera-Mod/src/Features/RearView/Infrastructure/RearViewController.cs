@@ -217,7 +217,7 @@ internal static class RearViewController
     /// null = the rear view may be shown; otherwise why not.
     static string OffReason()
     {
-        if (!ModSettings.On) return "EnableAll is off";
+        if (!ModSettings.On) return "EnableMod is off";
         Player p = Player.m_localPlayer;
         if (p == null) return "no local player";
         if (p.IsDead()) return "player is dead";

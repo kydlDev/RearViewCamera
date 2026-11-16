@@ -33,7 +33,7 @@ internal sealed class RearViewNoticeView
         box.style.borderLeftWidth = 3; box.style.borderLeftColor = UiKit.Gold;
         box.style.display = DisplayStyle.None;
         var text = new Label { pickingMode = PickingMode.Ignore };
-        text.style.color = UiKit.Text;
+        UiKit.Tint(text, TextRole.Body);
         text.style.whiteSpace = WhiteSpace.Normal;
         box.Add(text);
         UiLog.Verbose("RearViewNoticeView: built (hidden)");

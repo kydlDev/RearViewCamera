@@ -16,7 +16,7 @@ namespace RearViewCamera;
 internal static class ModSettings
 {
     // [General]
-    public static ConfigEntry<bool> EnableAll;
+    public static ConfigEntry<bool> EnableMod;
     // [Controls]
     public static ConfigEntry<KeyCode> SmallCameraKey;
     public static ConfigEntry<SmallCameraMode> SmallCameraKeyMode;
@@ -35,8 +35,8 @@ internal static class ModSettings
     // [DebugLog]
     public static ConfigEntry<bool> DebugLog;
 
-    /// Is the mod switched on ([General] EnableAll)? Off = inert: nothing shown, camera released.
-    public static bool On { get { return EnableAll == null || EnableAll.Value; } }
+    /// Is the mod switched on ([General] Enable mod)? Off = inert: nothing shown, camera released.
+    public static bool On { get { return EnableMod == null || EnableMod.Value; } }
 
     // --- dev-only fixed values (Tunables): not in the config file, KydlTools changes them for testing -----------------------------------
     // Starting values picked by Claude-Agent-1 (render 1:1 for the small view); the user settles them in game. Near / far clip, HDR, rendering path,
@@ -68,12 +68,32 @@ internal static class ModSettings
     public static readonly Tunable<float> DiagnosticSeconds = new Tunable<float>("Debug", "DiagnosticSeconds", 3f, 1f, 30f,
         "How often the per-frame diagnostic line is written while the rear view is shown (debug log on), seconds.");
 
+    /// The value the player had in an entry that moved (still in the file as an orphan before DropRemoved deletes it): the first of the
+    /// given (section, key, section, key, ...) pairs that holds a bool; true when there is none.
+    private static bool Old(ConfigFile c, params string[] sectionAndKey)
+    {
+        // OrphanedEntries is not a public member of every BepInEx 5 build (ConfigTools.DropRemoved reaches it the same way)
+        System.Reflection.PropertyInfo orphans = typeof(ConfigFile).GetProperty("OrphanedEntries", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+        var dict = orphans != null ? orphans.GetValue(c, null) as System.Collections.IDictionary : null;
+        for (int i = 0; dict != null && i + 1 < sectionAndKey.Length; i += 2)
+        {
+            var def = new ConfigDefinition(sectionAndKey[i], sectionAndKey[i + 1]);
+            bool b;
+            if (dict.Contains(def) && bool.TryParse((dict[def] as string ?? "").Trim(), out b))
+            {
+                return b;
+            }
+        }
+
+        return true;
+    }
+
     /// Expected outcome: every player entry is bound (returns that check).
     public static bool Bind(ConfigFile c)
     {
         var savedLines = ConfigTools.Capture(c);     // before the first Bind: every Bind saves the file with what BepInEx parsed
 
-        EnableAll = c.Bind("General", "EnableAll", true,
+        EnableMod = c.Bind("General", "Enable mod", Old(c, "General", "EnableAll"),
             "Switches the whole mod on / off while playing. Off: no rear view is shown.");
 
         SmallCameraKey = c.Bind("Controls", "SmallCameraKey", KeyCode.N,
@@ -113,12 +133,12 @@ internal static class ModSettings
         ConfigTools.ApplyCommaFix(c, savedLines);    // after every Bind: "3,5" typed by hand means 3.5, not 35
         ConfigTools.DropRemoved(c);
 
-        EnableAll.SettingChanged += (s, e) => ModLog.Info("Config: EnableAll = " + EnableAll.Value + (EnableAll.Value ? ", the mod is on" : ", the mod is inert (no rear view)"));
-        ModLog.Verbose("Config: bound (EnableAll " + EnableAll.Value + ", small key " + SmallCameraKey.Value + " " + SmallCameraKeyMode.Value
+        EnableMod.SettingChanged += (s, e) => ModLog.Info("Config: Enable mod = " + EnableMod.Value + (EnableMod.Value ? ", the mod is on" : ", the mod is inert (no rear view)"));
+        ModLog.Verbose("Config: bound (Enable mod " + EnableMod.Value + ", small key " + SmallCameraKey.Value + " " + SmallCameraKeyMode.Value
             + ", full-screen key " + FullScreenKey.Value + ", height " + SmallHeight.Value + " px, offset " + SmallOffsetX.Value + "/" + SmallOffsetY.Value
             + " px, distance " + CameraDistance.Value + " m, height offset " + CameraHeight.Value + " m, FOV " + FieldOfView.Value + " deg, "
             + UpdateFps.Value + " fps, mirror " + MirrorImage.Value + ", debug log " + DebugLog.Value + ")");
-        return EnableAll != null && SmallCameraKey != null && SmallCameraKeyMode != null && FullScreenKey != null && SmallHeight != null
+        return EnableMod != null && SmallCameraKey != null && SmallCameraKeyMode != null && FullScreenKey != null && SmallHeight != null
             && SmallOffsetX != null && SmallOffsetY != null && StatusEffects != null && CameraDistance != null && CameraHeight != null && FieldOfView != null
             && UpdateFps != null && MirrorImage != null && DebugLog != null;
     }

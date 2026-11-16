@@ -12,7 +12,7 @@
     {
       "do": "setConfig",
       "values": {
-        "General/EnableAll": false
+        "General/Enable mod": false
       }
     },
     {
@@ -44,7 +44,7 @@
     {
       "do": "setConfig",
       "values": {
-        "General/EnableAll": true
+        "General/Enable mod": true
       }
     },
     {

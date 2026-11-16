@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+- Changed: the menus of this mod take their text sizes, text colours and font from KydlCore. Needs KydlCore 1.1.1 or newer.
+- Changed: all the **Enable** switches are now together in `[General]` and have new names: `Enable mod` (was `EnableAll`). The values you had set are taken over; the old entries are removed from your config file.
+
 ## 2.0.0
 - Tested in game with the full TestLab suite (5 tests): 3 green runs in a row on 2026-11-05, plus the ecosystem run with all 12 KydlDev mods loaded together.
 - Version check with servers: you can still join any server without RearViewCamera; when the server has it too, both must have exactly the same version.
