@@ -3,10 +3,11 @@
 ## 2.0.1
 
 - Changed: the menus of this mod take their text sizes, text colours and font from KydlCore. Needs KydlCore 1.1.1 or newer.
-- Changed: all the **Enable** switches are now together in `[General]` and have new names: `Enable mod` (was `EnableAll`). The values you had set are taken over; the old entries are removed from your config file.
+- Changed: all the **Enable** switches are now together in `[General]` and have new names: `Enable Mod` (was `EnableAll`). The values you had set are taken over; the old entries are removed from your config file.
+- Changed: `Enable Mod` is now the first setting of `[General]`, in the F1 menu and in the F6 hub (your value is taken over).
 
 ### Testing
-- Unit tests: 98 passed. Integration tests: 32 passed.
+- Unit tests: 98 passed. Integration tests: 33 passed.
 - Property-based tests (FsCheck, included in the unit tests above): 5 property checks with generated inputs.
 - Coverage of the testable code: 100%. Mutation testing (Stryker): 98.3% of the mutants are caught by the tests.
 - Performance benchmarks (BenchmarkDotNet): 5.

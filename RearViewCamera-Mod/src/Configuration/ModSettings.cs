@@ -35,7 +35,7 @@ internal static class ModSettings
     // [DebugLog]
     public static ConfigEntry<bool> DebugLog;
 
-    /// Is the mod switched on ([General] Enable mod)? Off = inert: nothing shown, camera released.
+    /// Is the mod switched on ([General] Enable Mod)? Off = inert: nothing shown, camera released.
     public static bool On { get { return EnableMod == null || EnableMod.Value; } }
 
     // --- dev-only fixed values (Tunables): not in the config file, KydlTools changes them for testing -----------------------------------
@@ -93,8 +93,8 @@ internal static class ModSettings
     {
         var savedLines = ConfigTools.Capture(c);     // before the first Bind: every Bind saves the file with what BepInEx parsed
 
-        EnableMod = c.Bind("General", "Enable mod", Old(c, "General", "EnableAll"),
-            "Switches the whole mod on / off while playing. Off: no rear view is shown.");
+        EnableMod = c.Bind("General", "Enable Mod", Old(c, "General", "Enable mod", "General", "EnableAll"),
+            ConfigOrder.First("Switches the whole mod on / off while playing. Off: no rear view is shown."));
 
         SmallCameraKey = c.Bind("Controls", "SmallCameraKey", KeyCode.N,
             "Key for the small rear-view camera under the minimap. None = no small camera.");
@@ -133,8 +133,8 @@ internal static class ModSettings
         ConfigTools.ApplyCommaFix(c, savedLines);    // after every Bind: "3,5" typed by hand means 3.5, not 35
         ConfigTools.DropRemoved(c);
 
-        EnableMod.SettingChanged += (s, e) => ModLog.Info("Config: Enable mod = " + EnableMod.Value + (EnableMod.Value ? ", the mod is on" : ", the mod is inert (no rear view)"));
-        ModLog.Verbose("Config: bound (Enable mod " + EnableMod.Value + ", small key " + SmallCameraKey.Value + " " + SmallCameraKeyMode.Value
+        EnableMod.SettingChanged += (s, e) => ModLog.Info("Config: Enable Mod = " + EnableMod.Value + (EnableMod.Value ? ", the mod is on" : ", the mod is inert (no rear view)"));
+        ModLog.Verbose("Config: bound (Enable Mod " + EnableMod.Value + ", small key " + SmallCameraKey.Value + " " + SmallCameraKeyMode.Value
             + ", full-screen key " + FullScreenKey.Value + ", height " + SmallHeight.Value + " px, offset " + SmallOffsetX.Value + "/" + SmallOffsetY.Value
             + " px, distance " + CameraDistance.Value + " m, height offset " + CameraHeight.Value + " m, FOV " + FieldOfView.Value + " deg, "
             + UpdateFps.Value + " fps, mirror " + MirrorImage.Value + ", debug log " + DebugLog.Value + ")");
